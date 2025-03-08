@@ -1,0 +1,57 @@
+{
+  "name": "lightningcss-plugins",
+  "version": "0.0.0",
+  "private": true,
+  "keywords": [
+    "lightningcss",
+    "lightningcss-plugin",
+    "css",
+    "plugin"
+  ],
+  "license": "MIT",
+  "author": "Felix Icaza <fx.joliett17@gmail.com>",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r build",
+    "coverage": "vitest run --coverage",
+    "dev": "pnpm -r dev",
+    "lint": "eslint --cache --fix .",
+    "prepare": "simple-git-hooks",
+    "prepublishOnly": "pnpm build",
+    "release": "bumpp -r && pnpm -r publish",
+    "test": "vitest",
+    "test:update": "vitest --update",
+    "typecheck": "tsc --noEmit"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "pnpm lint"
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "bumpp": "catalog:",
+    "eslint": "catalog:",
+    "eslint-plugin-jsonc": "catalog:",
+    "eslint-plugin-package-json": "catalog:",
+    "eslint-plugin-yml": "catalog:",
+    "globals": "catalog:",
+    "jiti": "catalog:",
+    "lightningcss": "catalog:",
+    "lint-staged": "catalog:",
+    "neostandard": "catalog:",
+    "simple-git-hooks": "catalog:",
+    "tsup": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "lightningcss": "catalog:"
+  },
+  "packageManager": "pnpm@10.5.2"
+}
