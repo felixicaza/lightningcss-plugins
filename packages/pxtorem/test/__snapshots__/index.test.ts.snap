@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`pxtorem plugin > should convert px to rem 1`] = `"div{margin:1rem}"`;
+
+exports[`pxtorem plugin > should convert px to rem in custom properties 1`] = `":root{--margin:1rem}div{margin:var(--margin)}"`;
+
+exports[`pxtorem plugin > should convert px to rem in keyframes 1`] = `"@keyframes fadeIn{0%{margin:1rem}to{margin:2rem}}"`;
+
+exports[`pxtorem plugin > should convert px to rem in media queries 1`] = `"@media (width>=48rem){div{margin:1rem}}"`;
+
+exports[`pxtorem plugin > should not convert other units 1`] = `"div{margin:1em}"`;

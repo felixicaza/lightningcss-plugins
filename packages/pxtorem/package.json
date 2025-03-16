@@ -1,0 +1,42 @@
+{
+  "name": "lightningcss-plugin-pxtorem",
+  "version": "0.0.1",
+  "description": "Convert px to rem in css files with LightningCSS.",
+  "keywords": [
+    "lightningcss",
+    "lightningcss-plugin",
+    "css",
+    "plugin",
+    "pxtorem",
+    "px",
+    "rem"
+  ],
+  "homepage": "https://github.com/felixicaza/lightningcss-plugins/packages/pxtorem#readme",
+  "bugs": {
+    "url": "https://github.com/felixicaza/lightningcss-plugins/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felixicaza/lightningcss-plugins.git"
+  },
+  "license": "MIT",
+  "author": "Felix Icaza <fx.joliett17@gmail.com>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "prepublishOnly": "pnpm build",
+    "start": "tsx src/index.ts"
+  },
+  "packageManager": "pnpm@10.5.2"
+}
