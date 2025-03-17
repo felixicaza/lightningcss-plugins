@@ -40,6 +40,7 @@ export default [
       // disabled due this rule not support workspaces
       // reference: https://github.com/eslint-community/eslint-plugin-n/issues/209
       'n/no-extraneous-import': ['off'],
+      'n/no-missing-import': ['error', { ignoreTypeImport: true }],
 
       'yml/indent': ['error', 3, { indicatorValueIndent: 2 }],
       'yml/quotes': ['error', { prefer: 'double' }]
