@@ -12,7 +12,7 @@ This repository currently includes the following packages:
 
 - **[pxtorem](packages/pxtorem)**: A plugin to convert pixel units to rem units in your CSS.
 
-Each package is located in the [`packages`](packages) directory and follows a consistent structure for ease of development and maintenance.
+Each plugin is located in the [`packages`](packages) directory to follow a consistent structure for ease development and maintenance.
 
 ## 🤝 Contributing
 
