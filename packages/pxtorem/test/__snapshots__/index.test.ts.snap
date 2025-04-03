@@ -1,21 +1,106 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`pxtorem plugin > should convert pixel to rem 1`] = `"div{margin:1rem}"`;
+exports[`pxtorem plugin > should convert pixel to rem in custom properties 1`] = `
+":root {
+  --margin: 1rem;
+}
 
-exports[`pxtorem plugin > should convert pixel to rem in custom properties 1`] = `":root{--margin:1rem}div{margin:var(--margin)}"`;
+div {
+  margin: var(--margin);
+}
+"
+`;
 
-exports[`pxtorem plugin > should convert pixel to rem in keyframes 1`] = `"@keyframes fadeIn{0%{margin:1rem}to{margin:2rem}}"`;
+exports[`pxtorem plugin > should convert pixel to rem in keyframes 1`] = `
+"@keyframes fadeIn {
+  from {
+    margin: 1rem;
+  }
 
-exports[`pxtorem plugin > should convert pixel to rem in media queries 1`] = `"@media (width>=48rem){div{margin:1rem}}"`;
+  to {
+    margin: 2rem;
+  }
+}
+"
+`;
 
-exports[`pxtorem plugin > should handle custom configuration 1`] = `"div{margin:2rem}"`;
+exports[`pxtorem plugin > should convert pixel to rem in media queries 1`] = `
+"@media (width >= 48rem) {
+  div {
+    margin: 1rem;
+  }
+}
+"
+`;
 
-exports[`pxtorem plugin > should handle custom configuration with unitPrecision 1`] = `"div{margin:2.71rem}"`;
+exports[`pxtorem plugin > should convert pixel to rem using default configuration 1`] = `
+"div {
+  margin: 1rem;
+}
+"
+`;
 
-exports[`pxtorem plugin > should handle float pixel units 1`] = `"div{margin:2.7087rem}"`;
+exports[`pxtorem plugin > should handle custom configuration 1`] = `
+"div {
+  margin: 2rem;
+}
+"
+`;
 
-exports[`pxtorem plugin > should handle multiple pixel values 1`] = `"div{margin:1rem 2rem}"`;
+exports[`pxtorem plugin > should handle custom configuration with unitPrecision 1`] = `
+"div {
+  margin: 2.71rem;
+}
+"
+`;
 
-exports[`pxtorem plugin > should handle nested selectors 1`] = `"div{&>span{margin:1rem}}"`;
+exports[`pxtorem plugin > should handle extreme pixel values 1`] = `
+"div {
+  margin: 625rem;
+}
+"
+`;
 
-exports[`pxtorem plugin > should not convert other units 1`] = `"div{margin:1em}"`;
+exports[`pxtorem plugin > should handle float pixel units 1`] = `
+"div {
+  margin: 2.7087rem;
+}
+"
+`;
+
+exports[`pxtorem plugin > should handle multiple pixel values 1`] = `
+"div {
+  margin: 1rem 2rem;
+}
+"
+`;
+
+exports[`pxtorem plugin > should handle nested selectors 1`] = `
+"div {
+  & > span {
+    margin: 1rem;
+  }
+}
+"
+`;
+
+exports[`pxtorem plugin > should handle very small pixel values 1`] = `
+"div {
+  margin: .0001rem;
+}
+"
+`;
+
+exports[`pxtorem plugin > should not convert other units 1`] = `
+"div {
+  margin: 1em;
+}
+"
+`;
+
+exports[`pxtorem plugin > should use custom rootValue 1`] = `
+"div {
+  margin: 1rem;
+}
+"
+`;

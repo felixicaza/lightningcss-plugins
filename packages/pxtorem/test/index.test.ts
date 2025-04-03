@@ -1,15 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import { composeVisitors, transform } from 'lightningcss'
-import pxtorem from '../dist/index'
+import pxtorem from '../src/index'
+import { validatePositiveInteger } from '../src/utils/errorHandler'
 
 describe('pxtorem plugin', () => {
-  it('should convert pixel to rem', () => {
+  it('should convert pixel to rem using default configuration', () => {
     const css = 'div { margin: 16px; }'
 
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
-      minify: true,
+      minify: false,
       sourceMap: false,
       visitor: composeVisitors([pxtorem()])
     }).code.toString()
@@ -23,15 +24,8 @@ describe('pxtorem plugin', () => {
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
-      minify: true,
+      minify: false,
       sourceMap: false,
-      drafts: {
-        customMedia: true
-      },
-      nonStandard: {
-        deepSelectorCombinator: true
-      },
-      errorRecovery: true,
       visitor: composeVisitors([pxtorem()])
     }).code.toString()
 
@@ -44,7 +38,7 @@ describe('pxtorem plugin', () => {
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
-      minify: true,
+      minify: false,
       sourceMap: false,
       visitor: composeVisitors([pxtorem()])
     }).code.toString()
@@ -58,7 +52,7 @@ describe('pxtorem plugin', () => {
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
-      minify: true,
+      minify: false,
       sourceMap: false,
       visitor: composeVisitors([pxtorem()])
     }).code.toString()
@@ -72,7 +66,7 @@ describe('pxtorem plugin', () => {
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
-      minify: true,
+      minify: false,
       sourceMap: false,
       visitor: composeVisitors([pxtorem()])
     }).code.toString()
@@ -86,7 +80,7 @@ describe('pxtorem plugin', () => {
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
-      minify: true,
+      minify: false,
       sourceMap: false,
       visitor: composeVisitors([pxtorem()])
     }).code.toString()
@@ -100,7 +94,7 @@ describe('pxtorem plugin', () => {
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
-      minify: true,
+      minify: false,
       sourceMap: false,
       visitor: composeVisitors([pxtorem()])
     }).code.toString()
@@ -114,7 +108,7 @@ describe('pxtorem plugin', () => {
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
-      minify: true,
+      minify: false,
       sourceMap: false,
       visitor: composeVisitors([pxtorem()])
     }).code.toString()
@@ -128,7 +122,7 @@ describe('pxtorem plugin', () => {
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
-      minify: true,
+      minify: false,
       sourceMap: false,
       visitor: composeVisitors([pxtorem({ rootValue: 8, unitPrecision: 2 })])
     }).code.toString()
@@ -142,11 +136,83 @@ describe('pxtorem plugin', () => {
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
-      minify: true,
+      minify: false,
       sourceMap: false,
       visitor: composeVisitors([pxtorem({ unitPrecision: 2 })])
     }).code.toString()
 
     expect(output).toMatchSnapshot()
+  })
+
+  it('should use custom rootValue', () => {
+    const css = 'div { margin: 32px; }'
+
+    const output = transform({
+      filename: 'input.css',
+      code: Buffer.from(css),
+      minify: false,
+      sourceMap: false,
+      visitor: composeVisitors([pxtorem({ rootValue: 32 })])
+    }).code.toString()
+
+    expect(output).toMatchSnapshot()
+  })
+
+  it('should handle extreme pixel values', () => {
+    const css = 'div { margin: 10000px; }'
+
+    const output = transform({
+      filename: 'input.css',
+      code: Buffer.from(css),
+      minify: false,
+      sourceMap: false,
+      visitor: composeVisitors([pxtorem()])
+    }).code.toString()
+
+    expect(output).toMatchSnapshot()
+  })
+
+  it('should handle very small pixel values', () => {
+    const css = 'div { margin: 0.001px; }'
+
+    const output = transform({
+      filename: 'input.css',
+      code: Buffer.from(css),
+      minify: false,
+      sourceMap: false,
+      visitor: composeVisitors([pxtorem()])
+    }).code.toString()
+
+    expect(output).toMatchSnapshot()
+  })
+
+  it('should throw error for negative rootValue', () => {
+    expect(() => pxtorem({ rootValue: -1 })).toThrowError('Invalid rootValue: must not be negative.')
+  })
+
+  it('should throw error for negative unitPrecision', () => {
+    expect(() => pxtorem({ unitPrecision: -1 })).toThrowError('Invalid unitPrecision: must not be negative.')
+  })
+})
+
+describe('validatePositiveInteger', () => {
+  it('should throw error for undefined value', () => {
+    expect(() => validatePositiveInteger(undefined, 'rootValue')).toThrowError('Invalid rootValue: must be a valid number.')
+  })
+
+  it('should throw error for NaN value', () => {
+    expect(() => validatePositiveInteger(NaN, 'rootValue')).toThrowError('Invalid rootValue: must be a valid number.')
+  })
+
+  it('should throw error for negative value', () => {
+    expect(() => validatePositiveInteger(-1, 'rootValue')).toThrowError('Invalid rootValue: must not be negative.')
+  })
+
+  it('should throw error for decimal value', () => {
+    expect(() => validatePositiveInteger(1.5, 'rootValue')).toThrowError('Invalid rootValue: must not be a decimal.')
+  })
+
+  it('should pass for valid integer value', () => {
+    expect(() => validatePositiveInteger(1, 'rootValue')).not.toThrow()
   })
 })
