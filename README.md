@@ -1,5 +1,9 @@
 # ⚡ LightningCSS Plugins
 
+[![CI](https://github.com/felixicaza/lightningcss-plugins/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/felixicaza/lightningcss-plugins/actions/workflows/test.yml)
+[![Coveralls](https://img.shields.io/coverallsCoverage/github/felixicaza/lightningcss-plugins?logo=coveralls&link=https%3A%2F%2Fcoveralls.io%2Fgithub%2Ffelixicaza%2Flightningcss-plugins)](https://coveralls.io/github/felixicaza/lightningcss-plugins)
+[![GitHub License](https://img.shields.io/github/license/felixicaza/lightningcss-plugins)](https://github.com/felixicaza/lightningcss-plugins/blob/main/LICENSE)
+
 This repository is dedicated to housing a collection of plugins for [LightningCSS](https://lightningcss.dev), a powerful and efficient CSS processor.
 
 ## 📖 Introduction
@@ -10,7 +14,7 @@ This repository is dedicated to housing a collection of plugins for [LightningCS
 
 This repository currently includes the following packages:
 
-- **[pxtorem](packages/pxtorem)**: A plugin to convert pixel units to rem units in your CSS.
+- **[<img src="https://img.shields.io/badge/v0.0.7-4ea91d" alt="version" align="center"> pxtorem](packages/pxtorem)**: A plugin to convert pixel units to rem units in your CSS.
 
 Each plugin is located in the [`packages`](packages) directory to follow a consistent structure for ease development and maintenance.
 

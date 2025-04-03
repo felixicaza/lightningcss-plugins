@@ -1,5 +1,10 @@
 # ⚡ lightningcss-plugin-pxtorem
 
+[![GitHub Release](https://img.shields.io/github/v/release/felixicaza/lightningcss-plugins?logo=npm)](https://www.npmjs.com/package/lightningcss-plugin-pxtorem)
+[![CI](https://github.com/felixicaza/lightningcss-plugins/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/felixicaza/lightningcss-plugins/actions/workflows/test.yml)
+[![Coveralls](https://img.shields.io/coverallsCoverage/github/felixicaza/lightningcss-plugins?logo=coveralls&link=https%3A%2F%2Fcoveralls.io%2Fgithub%2Ffelixicaza%2Flightningcss-plugins)](https://coveralls.io/github/felixicaza/lightningcss-plugins)
+[![GitHub License](https://img.shields.io/github/license/felixicaza/lightningcss-plugins)](https://github.com/felixicaza/lightningcss-plugins/blob/main/LICENSE)
+
 The `lightningcss-plugin-pxtorem` plugin is designed to convert pixel units to rem units in your CSS, making it easier to maintain responsive and scalable designs.
 
 ## ✨ Features
@@ -137,11 +142,11 @@ h1 {
 }
 ```
 
-See others examples in the [test folder](./test/).
+See others examples in the [test folder](https://github.com/felixicaza/lightningcss-plugins/blob/main/packages/pxtorem/test/index.test.ts).
 
 ## 🤝 Contributing
 
-If you wish to contribute to this project, you can do so by reading the [contribution guide](../../CONTRIBUTING.md).
+If you wish to contribute to this project, you can do so by reading the [contribution guide](https://github.com/felixicaza/lightningcss-plugins/blob/main/CONTRIBUTING.md).
 
 ## 🙌 Credits
 
@@ -149,4 +154,4 @@ This plugin was highly inspired by [postcss-pxtorem](https://github.com/cuth/pos
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [license file](../../LICENSE) for more details.
+This project is licensed under the MIT License. See the [license file](https://github.com/felixicaza/lightningcss-plugins/blob/main/LICENSE) for more details.
