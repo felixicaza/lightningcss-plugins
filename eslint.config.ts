@@ -15,7 +15,6 @@ export default [
   eslintPluginJs.configs.recommended,
   ...neostandard({
     noJsx: true,
-    noStyle: true,
     ts: true
   }),
   eslintPlugins.promise.configs['flat/recommended'],
