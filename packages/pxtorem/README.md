@@ -44,6 +44,7 @@ The plugin accepts the following options:
 
 - `rootValue` (default: `16`): The root font size to use for the conversion. This is typically set to `16px`, which is the default font size in most browsers.
 - `unitPrecision` (default: `4`): The number of decimal places to use for the converted values.
+- `minValue` (default: `0`): The minimum value to convert. Also supports `negative` and `float` values.
 
 ## 🚀 Usage
 
@@ -101,6 +102,7 @@ export default defineConfig({
         pxtorem({
           rootValue: 18,
           unitPrecision: 2,
+          minValue: 10,
         }),
       ]),
     },
@@ -142,7 +144,7 @@ h1 {
 }
 ```
 
-See others examples in the [test folder](https://github.com/felixicaza/lightningcss-plugins/blob/main/packages/pxtorem/test/index.test.ts).
+See others examples in the [test folder](https://github.com/felixicaza/lightningcss-plugins/blob/main/packages/pxtorem/test).
 
 ## 🤝 Contributing
 
