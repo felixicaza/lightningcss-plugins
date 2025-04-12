@@ -1,5 +1,5 @@
 import { type LengthValue, type LengthUnit } from 'lightningcss'
-import { validatePositiveInteger } from './utils/errorHandler'
+import { validateIsNumber, validatePositiveInteger } from './utils/errorHandler'
 import type { Config } from './contracts/config.type'
 
 const defultConfig: Config = {
@@ -21,6 +21,9 @@ function pxtorem(config: Partial<Config> = {}) {
 
   validatePositiveInteger(rootValue, 'rootValue')
   validatePositiveInteger(unitPrecision, 'unitPrecision')
+  validateIsNumber(rootValue, 'rootValue')
+  validateIsNumber(unitPrecision, 'unitPrecision')
+  validateIsNumber(minValue, 'minValue')
 
   const toFixed = (value: number, precision: number): number => {
     const factor = Math.pow(10, precision)

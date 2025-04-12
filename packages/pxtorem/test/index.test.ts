@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { composeVisitors, transform } from 'lightningcss'
 import pxtorem from '../src/index'
-import { validatePositiveInteger } from '../src/utils/errorHandler'
+import { validatePositiveInteger, validateIsNumber } from '../src/utils/errorHandler'
 
 describe('pxtorem plugin', () => {
   it('should convert pixel to rem using default configuration', () => {
@@ -251,24 +251,33 @@ describe('pxtorem plugin', () => {
   })
 })
 
-describe('validatePositiveInteger', () => {
-  it('should throw error for undefined value', () => {
-    expect(() => validatePositiveInteger(undefined, 'rootValue')).toThrowError('Invalid rootValue: must be a valid number.')
-  })
-
-  it('should throw error for NaN value', () => {
-    expect(() => validatePositiveInteger(NaN, 'rootValue')).toThrowError('Invalid rootValue: must be a valid number.')
-  })
-
+describe('validate errors', () => {
   it('should throw error for negative value', () => {
     expect(() => validatePositiveInteger(-1, 'rootValue')).toThrowError('Invalid rootValue: must not be negative.')
   })
 
   it('should throw error for decimal value', () => {
-    expect(() => validatePositiveInteger(1.5, 'rootValue')).toThrowError('Invalid rootValue: must not be a decimal.')
+    expect(() => validatePositiveInteger(1.5, 'unitPrecision')).toThrowError('Invalid unitPrecision: must not be a decimal.')
   })
 
   it('should pass for valid integer value', () => {
-    expect(() => validatePositiveInteger(1, 'rootValue')).not.toThrow()
+    expect(() => validatePositiveInteger(1, 'minValue')).not.toThrow()
+  })
+
+  it('should throw error for non-number value', () => {
+    // @ts-expect-error
+    expect(() => validateIsNumber('10', 'rootValue')).toThrowError('Invalid rootValue: must be a valid number.')
+  })
+
+  it('should pass for valid number value', () => {
+    expect(() => validateIsNumber(1, 'unitPrecision')).not.toThrow()
+  })
+
+  it('should pass for valid negative number value', () => {
+    expect(() => validateIsNumber(-10, 'rootValue')).not.toThrow()
+  })
+
+  it('should pass for valid float number value', () => {
+    expect(() => validateIsNumber(10.50, 'minValue')).not.toThrow()
   })
 })
