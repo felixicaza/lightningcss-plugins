@@ -14,7 +14,8 @@ This repository is dedicated to housing a collection of plugins for [LightningCS
 
 This repository currently includes the following packages:
 
-- **[<img src="https://img.shields.io/badge/v0.0.7-4ea91d" alt="version" align="center"> pxtorem](packages/pxtorem)**: A plugin to convert pixel units to rem units in your CSS.
+- **[<img src="https://img.shields.io/badge/pxtorem-v0.0.7-4ea91d
+" alt="version" align="center">](packages/pxtorem)** - A plugin to convert pixel units to rem units in your CSS.
 
 Each plugin is located in the [`packages`](packages) directory to follow a consistent structure for ease development and maintenance.
 
