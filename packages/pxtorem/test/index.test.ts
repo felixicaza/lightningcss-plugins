@@ -117,14 +117,14 @@ describe('pxtorem plugin', () => {
   })
 
   it('should handle custom configuration', () => {
-    const css = 'div { margin: 16px; }'
+    const css = 'div { margin: 16px; } .foo { padding: 8px; }'
 
     const output = transform({
       filename: 'input.css',
       code: Buffer.from(css),
       minify: false,
       sourceMap: false,
-      visitor: composeVisitors([pxtorem({ rootValue: 8, unitPrecision: 2 })])
+      visitor: composeVisitors([pxtorem({ rootValue: 8, unitPrecision: 2, minValue: 10 })])
     }).code.toString()
 
     expect(output).toMatchSnapshot()
@@ -181,6 +181,62 @@ describe('pxtorem plugin', () => {
       minify: false,
       sourceMap: false,
       visitor: composeVisitors([pxtorem()])
+    }).code.toString()
+
+    expect(output).toMatchSnapshot()
+  })
+
+  it('should handle minimum positive value', () => {
+    const css = 'div { margin: 30px; } .foo { padding: 8px; }'
+
+    const output = transform({
+      filename: 'input.css',
+      code: Buffer.from(css),
+      minify: false,
+      sourceMap: false,
+      visitor: composeVisitors([pxtorem({ minValue: 10 })])
+    }).code.toString()
+
+    expect(output).toMatchSnapshot()
+  })
+
+  it('should handle minimum negative value', () => {
+    const css = 'div { margin: -5px; } .foo { top: -20px; }'
+
+    const output = transform({
+      filename: 'input.css',
+      code: Buffer.from(css),
+      minify: false,
+      sourceMap: false,
+      visitor: composeVisitors([pxtorem({ minValue: -10 })])
+    }).code.toString()
+
+    expect(output).toMatchSnapshot()
+  })
+
+  it('should handle minimum float value', () => {
+    const css = 'div { margin: 0.55px; } .foo { top: 0.25px; }'
+
+    const output = transform({
+      filename: 'input.css',
+      code: Buffer.from(css),
+      minify: false,
+      sourceMap: false,
+      visitor: composeVisitors([pxtorem({ minValue: 0.5 })])
+    }).code.toString()
+
+    expect(output).toMatchSnapshot()
+  })
+
+  it('should handle minimum zero value', () => {
+    const css = 'div { margin: 0px; } .foo { padding: 10px; } .bar { left: 0.25px; } .baz { top: -0.55px; }'
+
+    const output = transform({
+      filename: 'input.css',
+      code: Buffer.from(css),
+      minify: false,
+      sourceMap: false,
+      visitor: composeVisitors([pxtorem({ minValue: 0 })])
     }).code.toString()
 
     expect(output).toMatchSnapshot()

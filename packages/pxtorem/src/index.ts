@@ -4,7 +4,8 @@ import type { Config } from './contracts/config.type'
 
 const defultConfig: Config = {
   rootValue: 16,
-  unitPrecision: 4
+  unitPrecision: 4,
+  minValue: 0
 }
 
 /**
@@ -12,10 +13,11 @@ const defultConfig: Config = {
  * @param {Object} config - The configuration object.
  * @param {number} [config.rootValue=16] - The root value for conversion. (default is 16)
  * @param {number} [config.unitPrecision=4] - The decimal precision for the converted value. (default is 4)
+ * @param {number} [config.minValue=0] - The minimum value to be converted. (default is 0)
  * @returns {Function} `Length` function to convert pixel values to rem values used by LightningCSS.
  */
 function pxtorem(config: Partial<Config> = {}) {
-  const { rootValue, unitPrecision } = { ...defultConfig, ...config }
+  const { rootValue, unitPrecision, minValue } = { ...defultConfig, ...config }
 
   validatePositiveInteger(rootValue, 'rootValue')
   validatePositiveInteger(unitPrecision, 'unitPrecision')
@@ -28,8 +30,10 @@ function pxtorem(config: Partial<Config> = {}) {
 
   return {
     Length({ unit, value }: LengthValue): { unit: LengthUnit, value: number } | undefined {
-      if (unit === 'px') {
+      if (unit === 'px' && value >= minValue) {
         return { unit: 'rem', value: toFixed(value / rootValue, unitPrecision) }
+      } else {
+        return { unit, value }
       }
     }
   }

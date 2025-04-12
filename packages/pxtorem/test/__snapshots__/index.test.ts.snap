@@ -44,6 +44,10 @@ exports[`pxtorem plugin > should handle custom configuration 1`] = `
 "div {
   margin: 2rem;
 }
+
+.foo {
+  padding: 8px;
+}
 "
 `;
 
@@ -64,6 +68,58 @@ exports[`pxtorem plugin > should handle extreme pixel values 1`] = `
 exports[`pxtorem plugin > should handle float pixel units 1`] = `
 "div {
   margin: 2.7087rem;
+}
+"
+`;
+
+exports[`pxtorem plugin > should handle minimum float value 1`] = `
+"div {
+  margin: .0344rem;
+}
+
+.foo {
+  top: .25px;
+}
+"
+`;
+
+exports[`pxtorem plugin > should handle minimum negative value 1`] = `
+"div {
+  margin: -.3125rem;
+}
+
+.foo {
+  top: -20px;
+}
+"
+`;
+
+exports[`pxtorem plugin > should handle minimum positive value 1`] = `
+"div {
+  margin: 1.875rem;
+}
+
+.foo {
+  padding: 8px;
+}
+"
+`;
+
+exports[`pxtorem plugin > should handle minimum zero value 1`] = `
+"div {
+  margin: 0;
+}
+
+.foo {
+  padding: .625rem;
+}
+
+.bar {
+  left: .0156rem;
+}
+
+.baz {
+  top: -.55px;
 }
 "
 `;
