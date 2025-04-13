@@ -1,4 +1,4 @@
-export function validateIsNumber(value: number | undefined, name: string) {
+export function validateIsNumber(value: number, name: string) {
   if (typeof value !== 'number' || isNaN(value)) {
     throw new Error(`Invalid ${name}: must be a valid number.`)
   }

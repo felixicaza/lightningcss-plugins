@@ -1,6 +1,7 @@
 import { type LengthValue, type LengthUnit } from 'lightningcss'
+import { type Config } from './contracts/config.type'
+
 import { validateIsNumber, validatePositiveInteger } from './utils/errorHandler'
-import type { Config } from './contracts/config.type'
 
 const defultConfig: Config = {
   rootValue: 16,
@@ -32,7 +33,7 @@ function pxtorem(config: Partial<Config> = {}) {
   }
 
   return {
-    Length({ unit, value }: LengthValue): { unit: LengthUnit, value: number } | undefined {
+    Length({ unit, value }: LengthValue): { unit: LengthUnit, value: number } {
       if (unit === 'px' && value >= minValue) {
         return { unit: 'rem', value: toFixed(value / rootValue, unitPrecision) }
       } else {
