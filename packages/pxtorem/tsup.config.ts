@@ -8,5 +8,4 @@ export default defineConfig([
     minify: true,
     target: 'esnext'
   }
-
 ])
