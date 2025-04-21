@@ -1,28 +1,28 @@
-// @ts-check
-
 import type { Linter } from 'eslint'
 
-import eslintPluginJs from '@eslint/js'
-import eslintPluginJsonc from 'eslint-plugin-jsonc'
-import eslintPluginPackageJson from 'eslint-plugin-package-json/configs/recommended'
-import eslintPluginYml from 'eslint-plugin-yml'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
 import globals from 'globals'
+import eslintPluginJs from '@eslint/js'
+import eslintPluginYml from 'eslint-plugin-yml'
+import eslintPluginJsonc from 'eslint-plugin-jsonc'
+import eslintPluginPackageJson from 'eslint-plugin-package-json'
 import neostandard, { plugins as eslintPlugins, resolveIgnoresFromGitignore } from 'neostandard'
 
-export default [
-  { ignores: resolveIgnoresFromGitignore() },
-  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
+export default defineConfig([
+  globalIgnores(resolveIgnoresFromGitignore()),
+  { languageOptions: { globals: { ...globals.node } } },
   eslintPluginJs.configs.recommended,
-  ...neostandard({
+  neostandard({
     noJsx: true,
     ts: true
   }),
   eslintPlugins.promise.configs['flat/recommended'],
   eslintPlugins['@stylistic'].configs['recommended-flat'],
   eslintPlugins.n.configs['flat/recommended'],
-  ...eslintPluginJsonc.configs['flat/recommended-with-json'],
-  eslintPluginPackageJson,
-  ...eslintPluginYml.configs['flat/recommended'],
+  eslintPluginJsonc.configs['flat/recommended-with-json'],
+  eslintPluginPackageJson.configs.recommended,
+  eslintPluginYml.configs['flat/recommended'],
   {
     rules: {
       '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
@@ -45,4 +45,4 @@ export default [
       'yml/quotes': ['error', { prefer: 'double' }]
     }
   }
-] satisfies Linter.Config[]
+]) as Linter.Config[]
