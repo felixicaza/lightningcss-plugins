@@ -24,9 +24,9 @@
     "typecheck": "tsc --noEmit"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
+    "pre-commit": "nano-staged"
   },
-  "lint-staged": {
+  "nano-staged": {
     "*": "pnpm lint"
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "globals": "catalog:",
     "jiti": "catalog:",
     "lightningcss": "catalog:",
-    "lint-staged": "catalog:",
+    "nano-staged": "catalog:",
     "neostandard": "catalog:",
     "simple-git-hooks": "catalog:",
     "tsup": "catalog:",

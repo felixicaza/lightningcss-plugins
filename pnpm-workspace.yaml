@@ -1,11 +1,9 @@
 packages:
    - packages/*
-
 onlyBuiltDependencies:
    - esbuild
    - simple-git-hooks
    - unrs-resolver
-
 catalog:
    "@eslint/js": 9.25.1
    "@types/node": 22.14.1
@@ -18,7 +16,7 @@ catalog:
    globals: 16.0.0
    jiti: 2.4.2
    lightningcss: 1.29.3
-   lint-staged: 15.5.1
+   nano-staged: 0.8.0
    neostandard: 0.12.1
    simple-git-hooks: 2.12.1
    tsup: 8.4.0
