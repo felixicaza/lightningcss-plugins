@@ -24,34 +24,29 @@
     "typecheck": "tsc --noEmit"
   },
   "simple-git-hooks": {
-    "pre-commit": "nano-staged"
+    "pre-commit": "pnpm nano-staged"
   },
   "nano-staged": {
     "*": "pnpm lint"
   },
   "devDependencies": {
-    "@eslint/js": "catalog:",
+    "@eslint/js": "catalog:lint",
     "@types/node": "catalog:",
-    "@vitest/coverage-v8": "catalog:",
-    "bumpp": "catalog:",
-    "eslint": "catalog:",
-    "eslint-plugin-jsonc": "catalog:",
-    "eslint-plugin-package-json": "catalog:",
-    "eslint-plugin-yml": "catalog:",
-    "globals": "catalog:",
-    "jiti": "catalog:",
-    "lightningcss": "catalog:",
-    "nano-staged": "catalog:",
-    "neostandard": "catalog:",
-    "simple-git-hooks": "catalog:",
-    "tsup": "catalog:",
-    "tsx": "catalog:",
+    "@vitest/coverage-v8": "catalog:testing",
+    "bumpp": "catalog:releasing",
+    "eslint": "catalog:lint",
+    "eslint-plugin-jsonc": "catalog:lint",
+    "eslint-plugin-package-json": "catalog:lint",
+    "eslint-plugin-yml": "catalog:lint",
+    "globals": "catalog:lint",
+    "jiti": "catalog:lint",
+    "lightningcss": "catalog:peer",
+    "nano-staged": "catalog:lint",
+    "neostandard": "catalog:lint",
+    "simple-git-hooks": "catalog:lint",
+    "tsup": "catalog:build",
+    "tsx": "catalog:dev",
     "typescript": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
-  },
-  "peerDependencies": {
-    "lightningcss": "catalog:"
-  },
-  "packageManager": "pnpm@10.9.0"
+    "vitest": "catalog:testing"
+  }
 }
