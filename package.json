@@ -2,6 +2,7 @@
   "name": "lightningcss-plugins",
   "version": "0.0.0",
   "private": true,
+  "description": "A collection of plugins for LightningCSS.",
   "keywords": [
     "lightningcss",
     "lightningcss-plugin",
@@ -15,34 +16,32 @@
     "build": "pnpm -r build",
     "coverage": "vitest run --coverage",
     "dev": "pnpm -r dev",
-    "lint": "eslint --cache --fix .",
+    "lint": "oxlint . && eslint . --cache",
+    "lint:fix": "oxlint . --fix --fix-suggestions --fix-dangerously && eslint . --cache --fix",
     "prepare": "simple-git-hooks",
     "prepublishOnly": "pnpm build",
     "release": "bumpp -r && pnpm -r publish",
     "test": "vitest",
     "test:update": "vitest --update",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "oxlint --type-aware --type-check"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm nano-staged"
   },
   "nano-staged": {
-    "*": "pnpm lint"
+    "*": ["pnpm lint:fix", "pnpm typecheck"]
   },
   "devDependencies": {
-    "@eslint/js": "catalog:lint",
+    "@felixicaza/eslint-config": "catalog:lint",
+    "@felixicaza/oxlint-config": "catalog:lint",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:testing",
     "bumpp": "catalog:releasing",
     "eslint": "catalog:lint",
-    "eslint-plugin-jsonc": "catalog:lint",
-    "eslint-plugin-package-json": "catalog:lint",
-    "eslint-plugin-yml": "catalog:lint",
-    "globals": "catalog:lint",
     "jiti": "catalog:lint",
     "lightningcss": "catalog:peer",
     "nano-staged": "catalog:lint",
-    "neostandard": "catalog:lint",
+    "oxlint": "catalog:lint",
     "simple-git-hooks": "catalog:lint",
     "tsup": "catalog:build",
     "tsx": "catalog:dev",
