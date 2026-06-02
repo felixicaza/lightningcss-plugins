@@ -37,8 +37,10 @@
     "prepublishOnly": "pnpm build",
     "start": "tsx src/index.ts"
   },
+  "devDependencies": {
+    "lightningcss": "catalog:peer"
+  },
   "peerDependencies": {
     "lightningcss": ">=1.18.0"
-  },
-  "packageManager": "pnpm@10.5.2"
+  }
 }
