@@ -34,6 +34,7 @@
   "devDependencies": {
     "@felixicaza/eslint-config": "catalog:lint",
     "@felixicaza/oxlint-config": "catalog:lint",
+    "@felixicaza/tsdown-config": "catalog:build",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:testing",
     "bumpp": "catalog:releasing",
@@ -43,7 +44,7 @@
     "nano-staged": "catalog:lint",
     "oxlint": "catalog:lint",
     "simple-git-hooks": "catalog:lint",
-    "tsup": "catalog:build",
+    "tsdown": "catalog:build",
     "tsx": "catalog:dev",
     "typescript": "catalog:",
     "vitest": "catalog:testing"
