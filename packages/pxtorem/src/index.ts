@@ -1,5 +1,5 @@
-import { type LengthValue, type LengthUnit } from 'lightningcss'
-import { type Config } from './contracts/config.type'
+import type { LengthValue, LengthUnit } from 'lightningcss'
+import type { Config } from './contracts/config.type'
 
 import { validateIsNumber, validatePositiveInteger } from './utils/errorHandler'
 
@@ -11,10 +11,10 @@ const defultConfig: Config = {
 
 /**
  * Convert pixel units to rem units.
- * @param {Object} config - The configuration object.
- * @param {number} [config.rootValue=16] - The root value for conversion. (default is 16)
- * @param {number} [config.unitPrecision=4] - The decimal precision for the converted value. (default is 4)
- * @param {number} [config.minValue=0] - The minimum value to be converted. (default is 0)
+ * @param {object} config - The configuration object.
+ * @param {number} [config.rootValue] - The root value for conversion. (default is 16)
+ * @param {number} [config.unitPrecision] - The decimal precision for the converted value. (default is 4)
+ * @param {number} [config.minValue] - The minimum value to be converted. (default is 0)
  * @returns {Function} `Length` function to convert pixel values to rem values used by LightningCSS.
  */
 function pxtorem(config: Partial<Config> = {}) {

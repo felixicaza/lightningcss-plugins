@@ -21,6 +21,7 @@
   },
   "license": "MIT",
   "author": "Felix Icaza <fx.joliett17@gmail.com>",
+  "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {

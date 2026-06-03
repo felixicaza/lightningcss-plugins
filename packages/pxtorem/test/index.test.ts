@@ -265,7 +265,7 @@ describe('validate errors', () => {
   })
 
   it('should throw error for non-number value', () => {
-    // @ts-expect-error
+    // @ts-expect-error - Testing non-number value
     expect(() => validateIsNumber('10', 'rootValue')).toThrowError('Invalid rootValue: must be a valid number.')
   })
 

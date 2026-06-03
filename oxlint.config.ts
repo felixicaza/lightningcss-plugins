@@ -1,5 +1,3 @@
 import { felixicaza } from '@felixicaza/oxlint-config'
 
-export default felixicaza({
-  complexity: false
-})
+export default felixicaza({ complexity: false })
