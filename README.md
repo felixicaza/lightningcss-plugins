@@ -1,27 +1,17 @@
+[![lightningcss-plugins](https://raw.githubusercontent.com/felixicaza/lightningcss-plugins/HEAD/.github/assets/lightningcss-plugins.jpg)](https://github.com/felixicaza/lightningcss-plugins)
+
 # ⚡ LightningCSS Plugins
 
-[![CI](https://github.com/felixicaza/lightningcss-plugins/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/felixicaza/lightningcss-plugins/actions/workflows/test.yml)
-[![Coveralls](https://img.shields.io/coverallsCoverage/github/felixicaza/lightningcss-plugins?logo=coveralls&link=https%3A%2F%2Fcoveralls.io%2Fgithub%2Ffelixicaza%2Flightningcss-plugins)](https://coveralls.io/github/felixicaza/lightningcss-plugins)
-[![GitHub License](https://img.shields.io/github/license/felixicaza/lightningcss-plugins)](https://github.com/felixicaza/lightningcss-plugins/blob/main/LICENSE)
-
-This repository is dedicated to housing a collection of plugins for [LightningCSS](https://lightningcss.dev), a powerful and efficient CSS processor.
-
-## 📖 Introduction
-
-[LightningCSS](https://lightningcss.dev) is a modern CSS processor that offers a wide range of features for optimizing and transforming your CSS. This monorepo aims to provide a centralized location for various plugins that extend the functionality of LightningCSS.
+A collection of plugins for [LightningCSS](https://lightningcss.dev).
 
 ## 📦 Packages
 
-This repository currently includes the following packages:
-
-- **[<img src="https://img.shields.io/badge/pxtorem-v0.0.8-4ea91d" alt="version" align="center">](packages/pxtorem)** - A plugin to convert pixel units to rem units in your CSS.
-
-Each plugin is located in the [`packages`](packages) directory to follow a consistent structure for ease development and maintenance.
+- [`lightningcss-plugin-pxtorem`](./packages/dts-minify-lite): A plugin to convert pixel units to rem units in your CSS.
 
 ## 🤝 Contributing
 
-If you wish to contribute to this project, you can do so by reading the [contribution guide](CONTRIBUTING.md).
+Contributions to this monorepo are welcome! If you have any ideas for improvements or new features, please feel free to open an issue or submit a pull request, I appreciate your help in making those plugins better for everyone. Please read the [CONTRIBUTING.md](https://github.com/felixicaza/lightningcss-plugins/blob/main/CONTRIBUTING.md) file for guidelines.
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [license file](LICENSE) for more details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/felixicaza/lightningcss-plugins/blob/main/LICENSE) file for details.

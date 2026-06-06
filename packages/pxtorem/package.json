@@ -1,7 +1,7 @@
 {
   "name": "lightningcss-plugin-pxtorem",
   "version": "0.0.8",
-  "description": "Convert px to rem in css files with LightningCSS.",
+  "description": "⚡ Convert px to rem in css files with LightningCSS.",
   "keywords": [
     "lightningcss",
     "lightningcss-plugin",

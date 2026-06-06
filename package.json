@@ -1,5 +1,5 @@
 {
-  "name": "lightningcss-plugins",
+  "name": "@felixicaza/lightningcss-plugins",
   "version": "0.0.0",
   "private": true,
   "description": "A collection of plugins for LightningCSS.",
