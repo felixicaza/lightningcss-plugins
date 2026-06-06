@@ -1,54 +1,51 @@
+[![pxtorem](https://raw.githubusercontent.com/felixicaza/lightningcss-plugins/HEAD/.github/assets/pxtorem.jpg)](https://npmx.dev/package/lightningcss-plugin-pxtorem)
+
 # ⚡ lightningcss-plugin-pxtorem
 
-[![GitHub Release](https://img.shields.io/github/v/release/felixicaza/lightningcss-plugins?logo=npm)](https://www.npmjs.com/package/lightningcss-plugin-pxtorem)
-[![CI](https://github.com/felixicaza/lightningcss-plugins/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/felixicaza/lightningcss-plugins/actions/workflows/test.yml)
-[![Coveralls](https://img.shields.io/coverallsCoverage/github/felixicaza/lightningcss-plugins?logo=coveralls&link=https%3A%2F%2Fcoveralls.io%2Fgithub%2Ffelixicaza%2Flightningcss-plugins)](https://coveralls.io/github/felixicaza/lightningcss-plugins)
-[![GitHub License](https://img.shields.io/github/license/felixicaza/lightningcss-plugins)](https://github.com/felixicaza/lightningcss-plugins/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/lightningcss-plugin-pxtorem?color=f49813&logo=npm&logoColor=888888&labelColor=ffffff)](https://npmx.dev/package/lightningcss-plugin-pxtorem)
+[![GitHub actions workflow tests status](https://img.shields.io/github/actions/workflow/status/felixicaza/lightningcss-plugins/tests.yml?color=f49813&logo=rocket&logoColor=888888&label=tests&labelColor=ffffff)](https://github.com/felixicaza/lightningcss-plugins/actions/workflows/tests.yml)
+[![license](https://img.shields.io/badge/license-MIT-f49813?logo=googledocs&logoColor=888888&labelColor=ffffff)](https://github.com/felixicaza/lightningcss-plugins/blob/main/LICENSE)
 
-The `lightningcss-plugin-pxtorem` plugin is designed to convert pixel units to rem units in your CSS, making it easier to maintain responsive and scalable designs.
+The [`lightningcss-plugin-pxtorem`][pxtorem] plugin is designed to convert pixel units to rem units in your CSS, making it easier to maintain responsive and scalable designs.
 
 ## ✨ Features
 
-- ✅ Converts pixel units to rem units.
-- ✅ Helps maintain responsive and scalable designs.
-- ✅ Works seamlessly with LightningCSS and Vite ecosystem.
-- ✅ Customizable options.
+- 📏 Converts pixel units to rem units.
+- 📱 Helps maintain responsive and scalable designs.
+- ⚡ Works seamlessly with LightningCSS and Vite ecosystem.
+- ⚙️ Customizable options.
 
-## ⬇️ Installation
+## 📦 Installation
 
-You can install the `lightningcss-plugin-pxtorem` plugin using your preferred package manager:
+You can install [`lightningcss-plugin-pxtorem`][pxtorem] using npm:
 
-NPM:
 ```sh
-npm install lightningcss-plugin-pxtorem
+$ npm install lightningcss-plugin-pxtorem
 ```
 
-PNPM:
-```sh
-pnpm add lightningcss-plugin-pxtorem
-```
+<details>
+  <summary>Using a different package manager?</summary>
+  <br/>
 
-Yarn:
-```sh
-yarn add lightningcss-plugin-pxtorem
-```
+  Using pnpm:
+  ```sh
+  $ pnpm add lightningcss-plugin-pxtorem
+  ```
 
-Bun:
-```sh
-bun add lightningcss-plugin-pxtorem
-```
+  Using yarn:
+  ```sh
+  $ yarn add lightningcss-plugin-pxtorem
+  ```
 
-## ⚙️ Options
+  Using bun:
+  ```sh
+  $ bun add lightningcss-plugin-pxtorem
+  ```
+</details>
 
-The plugin accepts the following options:
+## ⚡ Usage
 
-- `rootValue` (default: `16`): The root font size to use for the conversion. This is typically set to `16px`, which is the default font size in most browsers.
-- `unitPrecision` (default: `4`): The number of decimal places to use for the converted values.
-- `minValue` (default: `0`): The minimum value to convert. Also supports `negative` and `float` values.
-
-## 🚀 Usage
-
-Using `lightningcss-plugin-pxtorem` plugin in your project.
+Add the plugin in your project.
 
 ```js
 import { transform, composeVisitors } from 'lightningcss';
@@ -67,12 +64,13 @@ const result = transform({
   ]),
 });
 
-console.log(res.code.toString()); // .foo { padding: 1.25rem 0.75rem; }
+console.log(result.code.toString()); // .foo { padding: 1.25rem 0.75rem; }
 ```
 
-Using `lightningcss-plugin-pxtorem` in your `vite.config.js` file:
+Add the plugin in your `vite.config.js` file:
 
 ```js
+// vite.config.js
 import { defineConfig } from "vite";
 import { composeVisitors } from "lightningcss";
 import pxtorem from "lightningcss-plugin-pxtorem";
@@ -87,73 +85,64 @@ export default defineConfig({
 });
 ```
 
-With custom options:
+> [!TIP]
+> Since it's a LightningCSS plugin, it's compatible with the Vite ecosystem like [UI Frameworks](https://patak.dev/vite/ecosystem.html) and [App Frameworks](https://patak.dev/vite/ecosystem.html#app-frameworks), allowing you to use it seamlessly in your projects.
 
-```js
-import { defineConfig } from "vite";
-import { composeVisitors } from "lightningcss";
-import pxtorem from "lightningcss-plugin-pxtorem";
+### ⚙️ Options
 
-export default defineConfig({
-  css: {
-    transformer: "lightningcss",
-    lightningcss: {
-      visitor: composeVisitors([
-        pxtorem({
-          rootValue: 18,
-          unitPrecision: 2,
-          minValue: 10,
-        }),
-      ]),
+The plugin accepts an object options:
+
+#### `rootValue` (number) — optional (default: 16)
+
+The root font size to use for the conversion. This is typically set to `16px`, which is the default font size in most browsers.
+
+#### `unitPrecision` (number) — optional (default: 4)
+
+The number of decimal places to use for the converted values.
+
+#### `minValue` (number) — optional (default: 0)
+
+The minimum value to convert. Also supports `negative` and `float` values.
+
+<details>
+  <summary>Example</summary>
+  <br/>
+
+  ```js
+  // vite.config.js
+  import { defineConfig } from "vite";
+  import { composeVisitors } from "lightningcss";
+  import pxtorem from "lightningcss-plugin-pxtorem";
+
+  export default defineConfig({
+    css: {
+      transformer: "lightningcss",
+      lightningcss: {
+        visitor: composeVisitors([
+          pxtorem({
+            rootValue: 18,
+            unitPrecision: 2,
+            minValue: 10,
+          }),
+        ]),
+      },
     },
-  },
-});
-```
+  });
+  ```
+</details>
 
-This plugin is designed to work with [LightningCSS](https://lightningcss.dev/), a CSS processor that provides advanced features and optimizations. It's compatible with the Vite ecosystem like [UI Frameworks](https://patak.dev/vite/ecosystem.html) and [App Frameworks](https://patak.dev/vite/ecosystem.html#app-frameworks), allowing you to use it seamlessly in your projects.
+See more examples in [tests folder](https://github.com/felixicaza/lightningcss-plugins/blob/main/packages/pxtorem/tests).
 
-## 📜 Example
+## 🏆 Credits
 
-With default options:
-
-```css
-/* input.css */
-body {
-  font-size: 16px;
-  padding: 20px;
-  margin: 10px;
-}
-
-h1 {
-  font-size: 32px;
-  line-height: 40px;
-}
-```
-
-```css
-/* output.css */
-body {
-  font-size: 1rem;
-  padding: 1.25rem;
-  margin: 0.625rem;
-}
-
-h1 {
-  font-size: 2rem;
-  line-height: 2.5rem;
-}
-```
-
-See others examples in the [test folder](https://github.com/felixicaza/lightningcss-plugins/blob/main/packages/pxtorem/test).
+This plugin was highly inspired by [@cuth/postcss-pxtorem](https://github.com/cuth/postcss-pxtorem).
 
 ## 🤝 Contributing
 
-If you wish to contribute to this project, you can do so by reading the [contribution guide](https://github.com/felixicaza/lightningcss-plugins/blob/main/CONTRIBUTING.md).
-
-## 🙌 Credits
-
-This plugin was highly inspired by [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem).
+Contributions to this library are welcome! If you have any ideas for improvements or new features, please feel free to open an issue or submit a pull request, I appreciate your help in making [lightningcss-plugin-pxtorem][pxtorem] better for everyone. Please read the [CONTRIBUTING.md](https://github.com/felixicaza/lightningcss-plugins/blob/main/CONTRIBUTING.md) for guidelines.
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [license file](https://github.com/felixicaza/lightningcss-plugins/blob/main/LICENSE) for more details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/felixicaza/lightningcss-plugins/blob/main/LICENSE) file for details.
+
+[pxtorem]: https://npmx.dev/package/lightningcss-plugin-pxtorem
