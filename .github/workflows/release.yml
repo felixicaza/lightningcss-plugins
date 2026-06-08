@@ -7,35 +7,104 @@ permissions:
 on:
    push:
       tags:
-         - "*@*"
+         - "**@**"
 
 jobs:
    release:
       runs-on: ubuntu-latest
+
       steps:
-         - uses: actions/checkout@v4
+         - uses: actions/checkout@v6
            with:
               fetch-depth: 0
 
-         - name: Validate tag format
+         - name: Validate and parse tag
+           id: tag
+           shell: bash
            run: |
-              if [[ ! $GITHUB_REF =~ ^refs/tags/[a-zA-Z0-9-]+@[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                echo "Invalid tag format. Expected 'name@x.y.z'."
+              TAG="${GITHUB_REF_NAME}"
+
+              # Format: @scope/name@x.y.z or name@x.y.z
+              if [[ ! "$TAG" =~ ^(@[a-zA-Z0-9-]+/)?[a-zA-Z0-9-]+@[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                echo "Invalid tag format. Expected '@scope/name@x.y.z' or 'name@x.y.z'. Got: $TAG"
                 exit 1
               fi
 
-         - uses: pnpm/action-setup@v4
-         - uses: actions/setup-node@v4
+              TAG_NAME="${TAG%@*}"
+              TAG_VERSION="${TAG##*@}"
+
+              # folder = unscoped package name part
+              if [[ "$TAG_NAME" =~ ^@[a-zA-Z0-9-]+/(.+)$ ]]; then
+                PKG_FOLDER="${BASH_REMATCH[1]}"
+              else
+                PKG_FOLDER="$TAG_NAME"
+              fi
+
+              PKG_DIR="packages/${PKG_FOLDER}"
+
+              if [[ ! -f "${PKG_DIR}/package.json" ]]; then
+                echo "Package manifest not found: ${PKG_DIR}/package.json"
+                exit 1
+              fi
+
+              PKG_JSON_NAME="$(node -p "require('./${PKG_DIR}/package.json').name")"
+              if [[ "${PKG_JSON_NAME}" != "${TAG_NAME}" ]]; then
+                echo "Tag package name (${TAG_NAME}) does not match package.json name (${PKG_JSON_NAME})"
+                exit 1
+              fi
+
+              echo "pkg_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
+              echo "pkg_version=${TAG_VERSION}" >> "$GITHUB_OUTPUT"
+              echo "pkg_dir=${PKG_DIR}" >> "$GITHUB_OUTPUT"
+
+         - uses: actions/setup-node@v6
            with:
               node-version: lts/*
               registry-url: https://registry.npmjs.org/
 
-         - run: pnpx changelogithub
-           env:
-              GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+         - uses: pnpm/action-setup@v6
+           with:
+              version: latest
 
-         - run: pnpm install
-         - run: pnpm publish -r --access public --no-git-checks
+         - name: Install dependencies
+           run: pnpm ci
+
+         - name: Resolve changelog range
+           id: changelog_range
+           shell: bash
+           run: |
+              CURRENT_TAG="${{ github.ref_name }}"
+              PKG="${{ steps.tag.outputs.pkg_name }}"
+
+              PREV_TAG="$(
+                git tag --list "${PKG}@*" --sort=-v:refname \
+                | grep -Fxv "${CURRENT_TAG}" \
+                | head -n 1 || true
+              )"
+
+              if [[ -n "${PREV_TAG}" ]]; then
+                FROM_REF="${PREV_TAG}"
+              else
+                FROM_REF="$(git rev-list --max-parents=0 HEAD | tail -n 1)"
+              fi
+
+              echo "from_ref=${FROM_REF}" >> "$GITHUB_OUTPUT"
+              echo "to_ref=${CURRENT_TAG}" >> "$GITHUB_OUTPUT"
+
+         - name: Generate changelog/release notes
+           run: |
+              pnpx changelogithub@latest \
+                --from "${{ steps.changelog_range.outputs.from_ref }}" \
+                --to "${{ steps.changelog_range.outputs.to_ref }}"
            env:
-              NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+         - name: Build package
+           run: pnpm -C "${{ steps.tag.outputs.pkg_dir }}" build
+
+         - name: Publish package
+           working-directory: ${{ steps.tag.outputs.pkg_dir }}
+           run: pnpm publish --access public --no-git-checks
+           env:
+              NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
               NPM_CONFIG_PROVENANCE: true
