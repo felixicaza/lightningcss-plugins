@@ -13,18 +13,21 @@ jobs:
    lint:
       runs-on: ubuntu-latest
       steps:
-         - uses: actions/checkout@v4
+         - uses: actions/checkout@v6
+           with:
+              fetch-depth: 0
 
-         - name: Install pnpm
-           uses: pnpm/action-setup@v4
-
-         - name: Set node
-           uses: actions/setup-node@v4
+         - uses: actions/setup-node@v6
            with:
               node-version: lts/*
+              registry-url: https://registry.npmjs.org/
+
+         - uses: pnpm/action-setup@v6
+           with:
+              version: latest
 
          - name: Install
-           run: pnpm install
+           run: pnpm ci
 
          - name: Build
            run: pnpm build
@@ -45,18 +48,21 @@ jobs:
          fail-fast: false
 
       steps:
-         - uses: actions/checkout@v4
-
-         - name: Install pnpm
-           uses: pnpm/action-setup@v4
-
-         - name: Set node ${{ matrix.node }}
-           uses: actions/setup-node@v4
+         - uses: actions/checkout@v6
            with:
-              node-version: ${{ matrix.node }}
+              fetch-depth: 0
+
+         - uses: actions/setup-node@v6
+           with:
+              node-version: lts/*
+              registry-url: https://registry.npmjs.org/
+
+         - uses: pnpm/action-setup@v6
+           with:
+              version: latest
 
          - name: Install
-           run: pnpm install
+           run: pnpm ci
 
          - name: Test
            run: pnpm test
@@ -64,6 +70,6 @@ jobs:
          - name: Run coverage
            run: pnpm coverage
 
-         - uses: coverallsapp/github-action@master
+         - uses: coverallsapp/github-action@v2
            with:
               github-token: ${{ secrets.GITHUB_TOKEN }}
