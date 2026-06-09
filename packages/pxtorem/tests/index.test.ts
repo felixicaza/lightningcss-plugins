@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { composeVisitors, transform } from 'lightningcss'
+
 import pxtorem from '../src/index'
-import { validatePositiveInteger, validateIsNumber } from '../src/utils/errorHandler'
 
 describe('pxtorem plugin', () => {
   it('should convert pixel to rem using default configuration', () => {
-    const css = 'div { margin: 16px; }'
+    const css = 'div { margin: 16px; font-size: 24px; }'
 
     const output = transform({
       filename: 'input.css',
@@ -19,7 +19,7 @@ describe('pxtorem plugin', () => {
   })
 
   it('should not convert other units', () => {
-    const css = 'div { margin: 1em; }'
+    const css = 'div { margin: 1em; width: 100%; height: 50vh; }'
 
     const output = transform({
       filename: 'input.css',
@@ -32,8 +32,8 @@ describe('pxtorem plugin', () => {
     expect(output).toMatchSnapshot()
   })
 
-  it('should convert pixel to rem in media queries', () => {
-    const css = '@media (min-width: 768px) { div { margin: 16px; } }'
+  it('should convert pixel to rem inside media queries', () => {
+    const css = '@media (min-width: 768px) { div { margin: 16px; font-size: 24px; } }'
 
     const output = transform({
       filename: 'input.css',
@@ -46,8 +46,8 @@ describe('pxtorem plugin', () => {
     expect(output).toMatchSnapshot()
   })
 
-  it('should convert pixel to rem in keyframes', () => {
-    const css = '@keyframes fadeIn { from { margin: 16px; } to { margin: 32px; } }'
+  it('should convert pixel to rem inside keyframes', () => {
+    const css = '@keyframes fadeIn { from { margin: 16px; font-size: 24px; } to { margin: 32px; font-size: 48px; } }'
 
     const output = transform({
       filename: 'input.css',
@@ -61,7 +61,7 @@ describe('pxtorem plugin', () => {
   })
 
   it('should convert pixel to rem in custom properties', () => {
-    const css = ':root { --margin: 16px; } div { margin: var(--margin); }'
+    const css = ':root { --m: 16px; --fs: 24px; --lh: 30px; } div { margin: var(--m); font-size: var(--fs); line-height: var(--lh); }'
 
     const output = transform({
       filename: 'input.css',
@@ -75,7 +75,7 @@ describe('pxtorem plugin', () => {
   })
 
   it('should handle multiple pixel values', () => {
-    const css = 'div { margin: 16px 32px; }'
+    const css = 'div { margin: 16px 32px; font: italic small-caps bold 15px/30px Georgia, serif; }'
 
     const output = transform({
       filename: 'input.css',
@@ -88,8 +88,8 @@ describe('pxtorem plugin', () => {
     expect(output).toMatchSnapshot()
   })
 
-  it('should handle nested selectors', () => {
-    const css = 'div { & > span { margin: 16px; } }'
+  it('should handle css nesting', () => {
+    const css = 'div { & > span { margin: 16px; font-size: 24px; } }'
 
     const output = transform({
       filename: 'input.css',
@@ -103,7 +103,7 @@ describe('pxtorem plugin', () => {
   })
 
   it('should handle float pixel units', () => {
-    const css = 'div { margin: 43.3398589px; }'
+    const css = 'div { font-size: 43.3398589px; }'
 
     const output = transform({
       filename: 'input.css',
@@ -116,50 +116,8 @@ describe('pxtorem plugin', () => {
     expect(output).toMatchSnapshot()
   })
 
-  it('should handle custom configuration', () => {
-    const css = 'div { margin: 16px; } .foo { padding: 8px; }'
-
-    const output = transform({
-      filename: 'input.css',
-      code: Buffer.from(css),
-      minify: false,
-      sourceMap: false,
-      visitor: composeVisitors([pxtorem({ rootValue: 8, unitPrecision: 2, minValue: 10 })])
-    }).code.toString()
-
-    expect(output).toMatchSnapshot()
-  })
-
-  it('should handle custom configuration with unitPrecision', () => {
-    const css = 'div { margin: 43.3398589px; }'
-
-    const output = transform({
-      filename: 'input.css',
-      code: Buffer.from(css),
-      minify: false,
-      sourceMap: false,
-      visitor: composeVisitors([pxtorem({ unitPrecision: 2 })])
-    }).code.toString()
-
-    expect(output).toMatchSnapshot()
-  })
-
-  it('should use custom rootValue', () => {
-    const css = 'div { margin: 32px; }'
-
-    const output = transform({
-      filename: 'input.css',
-      code: Buffer.from(css),
-      minify: false,
-      sourceMap: false,
-      visitor: composeVisitors([pxtorem({ rootValue: 32 })])
-    }).code.toString()
-
-    expect(output).toMatchSnapshot()
-  })
-
   it('should handle extreme pixel values', () => {
-    const css = 'div { margin: 10000px; }'
+    const css = 'div { margin: 10000px; font-size: 20000px; }'
 
     const output = transform({
       filename: 'input.css',
@@ -173,7 +131,7 @@ describe('pxtorem plugin', () => {
   })
 
   it('should handle very small pixel values', () => {
-    const css = 'div { margin: 0.001px; }'
+    const css = 'div { margin: 0.001px; font-size: 0.002px; }'
 
     const output = transform({
       filename: 'input.css',
@@ -184,100 +142,5 @@ describe('pxtorem plugin', () => {
     }).code.toString()
 
     expect(output).toMatchSnapshot()
-  })
-
-  it('should handle minimum positive value', () => {
-    const css = 'div { margin: 30px; } .foo { padding: 8px; }'
-
-    const output = transform({
-      filename: 'input.css',
-      code: Buffer.from(css),
-      minify: false,
-      sourceMap: false,
-      visitor: composeVisitors([pxtorem({ minValue: 10 })])
-    }).code.toString()
-
-    expect(output).toMatchSnapshot()
-  })
-
-  it('should handle minimum negative value', () => {
-    const css = 'div { margin: -5px; } .foo { top: -20px; }'
-
-    const output = transform({
-      filename: 'input.css',
-      code: Buffer.from(css),
-      minify: false,
-      sourceMap: false,
-      visitor: composeVisitors([pxtorem({ minValue: -10 })])
-    }).code.toString()
-
-    expect(output).toMatchSnapshot()
-  })
-
-  it('should handle minimum float value', () => {
-    const css = 'div { margin: 0.55px; } .foo { top: 0.25px; }'
-
-    const output = transform({
-      filename: 'input.css',
-      code: Buffer.from(css),
-      minify: false,
-      sourceMap: false,
-      visitor: composeVisitors([pxtorem({ minValue: 0.5 })])
-    }).code.toString()
-
-    expect(output).toMatchSnapshot()
-  })
-
-  it('should handle minimum zero value', () => {
-    const css = 'div { margin: 0px; } .foo { padding: 10px; } .bar { left: 0.25px; } .baz { top: -0.55px; }'
-
-    const output = transform({
-      filename: 'input.css',
-      code: Buffer.from(css),
-      minify: false,
-      sourceMap: false,
-      visitor: composeVisitors([pxtorem({ minValue: 0 })])
-    }).code.toString()
-
-    expect(output).toMatchSnapshot()
-  })
-
-  it('should throw error for negative rootValue', () => {
-    expect(() => pxtorem({ rootValue: -1 })).toThrowError('Invalid rootValue: must not be negative.')
-  })
-
-  it('should throw error for negative unitPrecision', () => {
-    expect(() => pxtorem({ unitPrecision: -1 })).toThrowError('Invalid unitPrecision: must not be negative.')
-  })
-})
-
-describe('validate errors', () => {
-  it('should throw error for negative value', () => {
-    expect(() => validatePositiveInteger(-1, 'rootValue')).toThrowError('Invalid rootValue: must not be negative.')
-  })
-
-  it('should throw error for decimal value', () => {
-    expect(() => validatePositiveInteger(1.5, 'unitPrecision')).toThrowError('Invalid unitPrecision: must not be a decimal.')
-  })
-
-  it('should pass for valid integer value', () => {
-    expect(() => validatePositiveInteger(1, 'minValue')).not.toThrow()
-  })
-
-  it('should throw error for non-number value', () => {
-    // @ts-expect-error - Testing non-number value
-    expect(() => validateIsNumber('10', 'rootValue')).toThrowError('Invalid rootValue: must be a valid number.')
-  })
-
-  it('should pass for valid number value', () => {
-    expect(() => validateIsNumber(1, 'unitPrecision')).not.toThrow()
-  })
-
-  it('should pass for valid negative number value', () => {
-    expect(() => validateIsNumber(-10, 'rootValue')).not.toThrow()
-  })
-
-  it('should pass for valid float number value', () => {
-    expect(() => validateIsNumber(10.50, 'minValue')).not.toThrow()
   })
 })

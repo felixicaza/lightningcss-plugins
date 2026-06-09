@@ -1,0 +1,148 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`custom configs > should handle all props 1`] = `
+"div {
+  letter-spacing: .3125rem;
+  word-spacing: .625rem;
+  width: 6.25rem;
+  height: 3.125rem;
+  margin: 1rem;
+  padding: .5rem;
+  font-size: 1.5rem;
+  line-height: 1.875rem;
+}
+"
+`;
+
+exports[`custom configs > should handle custom configuration 1`] = `
+"div {
+  margin: 16px;
+  font-size: 3rem;
+}
+
+.foo {
+  word-spacing: 5px;
+  padding: 8px;
+  line-height: 3.75rem;
+}
+"
+`;
+
+exports[`custom configs > should handle custom propList 1`] = `
+"div {
+  letter-spacing: 5px;
+  word-spacing: 10px;
+  width: 100px;
+  height: 50px;
+  margin: 1rem;
+  padding: .5rem;
+  font-size: 24px;
+  line-height: 30px;
+}
+"
+`;
+
+exports[`custom configs > should handle minimum float value 1`] = `
+"div {
+  margin: .55px;
+  font-size: .0344rem;
+}
+
+.foo {
+  line-height: .25px;
+  top: .25px;
+}
+"
+`;
+
+exports[`custom configs > should handle minimum negative value 1`] = `
+"div {
+  margin: -5px;
+  font-size: -.625rem;
+}
+
+.foo {
+  line-height: -40px;
+  top: -20px;
+}
+"
+`;
+
+exports[`custom configs > should handle minimum positive value 1`] = `
+"div {
+  margin: 30px;
+  font-size: 3.75rem;
+}
+
+.foo {
+  padding: 8px;
+  line-height: 1rem;
+}
+"
+`;
+
+exports[`custom configs > should handle minimum zero value 1`] = `
+"div {
+  margin: 0;
+  font-size: 0;
+}
+
+.foo {
+  padding: 10px;
+  line-height: 1.25rem;
+}
+
+.bar {
+  left: .25px;
+}
+
+.baz {
+  top: -.55px;
+}
+"
+`;
+
+exports[`custom configs > should handle negation patterns 1`] = `
+"div {
+  letter-spacing: .3125rem;
+  word-spacing: .625rem;
+  background-position-y: 100px;
+  width: 6.25rem;
+  height: 3.125rem;
+  margin: 1rem;
+  padding: .5rem;
+  font-size: 24px;
+  line-height: 30px;
+}
+"
+`;
+
+exports[`custom configs > should handle pattern for props 1`] = `
+"div {
+  letter-spacing: 5px;
+  word-spacing: 10px;
+  background-position-y: 6.25rem;
+  width: 100px;
+  height: 50px;
+  margin: 1rem 1.125rem 1.0625rem 1.1875rem;
+  padding: .5rem .6875rem .5625rem .625rem;
+  font-size: 24px;
+  line-height: 30px;
+}
+"
+`;
+
+exports[`custom configs > should use custom rootValue 1`] = `
+"div {
+  margin: 32px;
+  font-size: 2rem;
+}
+"
+`;
+
+exports[`custom configs > should use custom unitPrecision 1`] = `
+"div {
+  font-size: 2.71rem;
+}
+"
+`;
