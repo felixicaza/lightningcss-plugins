@@ -39,7 +39,8 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "prepublishOnly": "pnpm build",
-    "start": "tsx src/index.ts"
+    "start": "tsx src/index.ts",
+    "start:watch": "tsx watch src/index.ts"
   },
   "devDependencies": {
     "lightningcss": "catalog:peer"

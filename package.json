@@ -21,6 +21,8 @@
     "prepare": "simple-git-hooks",
     "prepublishOnly": "pnpm build",
     "release": "bumpp -r && pnpm -r publish",
+    "start": "pnpm -r start",
+    "start:watch": "pnpm -r start:watch",
     "test": "vitest",
     "test:update": "vitest --update",
     "typecheck": "oxlint --type-aware --type-check"
