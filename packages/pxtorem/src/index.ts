@@ -1,46 +1,98 @@
-import type { LengthValue, LengthUnit } from 'lightningcss'
-import type { Config } from './contracts/config.type'
+import type { Config, DeclarationLike, StyleSheetLike } from './types/index.ts'
 
-import { validateIsNumber, validatePositiveInteger } from './utils/errorHandler'
+import { createPxToRemWalker } from './utils/conversion.ts'
+import { createPropertyMatcher } from './utils/propRules.ts'
+import { validateIsNumber, validatePositiveInteger } from './utils/errorHandler.ts'
+import { collectUsedCustomPropsInAst, isCustomDeclarationLike, isCustomPropertyLike, normalizeCustomName, getEffectiveProperty, getPropertyValueNode } from './utils/factory.ts'
 
-const defultConfig: Config = {
+const defaultConfig: Config = {
   rootValue: 16,
   unitPrecision: 4,
+  propList: ['font', 'font-size', 'line-height', 'letter-spacing', 'word-spacing'],
   minValue: 0
 }
 
-/**
- * Convert pixel units to rem units.
- * @param {object} config - The configuration object.
- * @param {number} [config.rootValue] - The root value for conversion. (default is 16)
- * @param {number} [config.unitPrecision] - The decimal precision for the converted value. (default is 4)
- * @param {number} [config.minValue] - The minimum value to be converted. (default is 0)
- * @returns {Function} `Length` function to convert pixel values to rem values used by LightningCSS.
- */
-function pxtorem(config: Partial<Config> = {}) {
-  const { rootValue, unitPrecision, minValue } = { ...defultConfig, ...config }
+export default function pxtorem(config: Partial<Config> = {}) {
+  const userConfig = { ...defaultConfig, ...config }
 
-  validatePositiveInteger(rootValue, 'rootValue')
-  validatePositiveInteger(unitPrecision, 'unitPrecision')
-  validateIsNumber(rootValue, 'rootValue')
-  validateIsNumber(unitPrecision, 'unitPrecision')
-  validateIsNumber(minValue, 'minValue')
+  validatePositiveInteger(userConfig.rootValue, 'rootValue')
+  validatePositiveInteger(userConfig.unitPrecision, 'unitPrecision')
+  validateIsNumber(userConfig.rootValue, 'rootValue')
+  validateIsNumber(userConfig.unitPrecision, 'unitPrecision')
+  validateIsNumber(userConfig.minValue, 'minValue')
 
-  const toFixed = (value: number, precision: number): number => {
-    const factor = Math.pow(10, precision)
+  const shouldConvertProperty = createPropertyMatcher(userConfig.propList)
+  const walkAndConvert: (node: unknown) => boolean = createPxToRemWalker({
+    rootValue: userConfig.rootValue,
+    unitPrecision: userConfig.unitPrecision,
+    minValue: userConfig.minValue
+  })
 
-    return Math.round(value * factor) / factor
-  }
+  const usedCustomProps = new Set<string>()
+  const cache = new Map<string, DeclarationLike>()
 
-  return {
-    Length({ unit, value }: LengthValue): { unit: LengthUnit, value: number } {
-      if (unit === 'px' && value >= minValue) {
-        return { unit: 'rem', value: toFixed(value / rootValue, unitPrecision) }
-      } else {
-        return { unit, value }
-      }
+  // Pre-scan once (before declaration visitors mutate anything)
+  let scanned = false
+  const StyleSheet = (sheet: StyleSheetLike) => {
+    if (!scanned) {
+      collectUsedCustomPropsInAst(sheet, shouldConvertProperty, usedCustomProps)
+      scanned = true
     }
+    return undefined
   }
-}
 
-export default pxtorem
+  const Declaration = new Proxy({} as Record<string, DeclarationLike>, {
+    get(_, prop: string | symbol): DeclarationLike | undefined {
+      if (typeof prop !== 'string') return undefined
+
+      let handler = cache.get(prop)
+      if (!handler) {
+        const created: DeclarationLike = (value) => {
+          if (prop === 'custom') {
+            let custom = null
+
+            if (isCustomPropertyLike(value)) {
+              custom = value
+            } else if (isCustomDeclarationLike(value)) {
+              custom = value.value
+            }
+
+            if (!custom) return undefined
+
+            const customName = normalizeCustomName(custom.name)
+            if (!customName) return undefined
+
+            if (!usedCustomProps.has(customName)) return undefined
+
+            const changed = walkAndConvert(custom.value)
+            if (!changed) return undefined
+
+            return {
+              property: 'custom',
+              value: {
+                name: customName,
+                value: custom.value
+              }
+            }
+          }
+
+          const effectiveProp = getEffectiveProperty(prop, value)
+          if (shouldConvertProperty(effectiveProp)) {
+            const valueNode = getPropertyValueNode(prop, value)
+            const changed = walkAndConvert(valueNode)
+            return changed ? value : undefined
+          }
+
+          return undefined
+        }
+
+        cache.set(prop, created)
+        handler = created
+      }
+
+      return handler
+    }
+  })
+
+  return { StyleSheet, Declaration }
+}
