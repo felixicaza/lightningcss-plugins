@@ -25,7 +25,7 @@
     "start:watch": "pnpm -r start:watch",
     "test": "vitest",
     "test:update": "vitest --update",
-    "typecheck": "oxlint --type-aware --type-check"
+    "typecheck": "oxlint . --type-aware --type-check"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm nano-staged"
