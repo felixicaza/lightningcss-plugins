@@ -23,8 +23,6 @@ jobs:
               registry-url: https://registry.npmjs.org/
 
          - uses: pnpm/action-setup@v6
-           with:
-              version: latest
 
          - name: Install
            run: pnpm ci
@@ -58,8 +56,6 @@ jobs:
               registry-url: https://registry.npmjs.org/
 
          - uses: pnpm/action-setup@v6
-           with:
-              version: latest
 
          - name: Install
            run: pnpm ci
