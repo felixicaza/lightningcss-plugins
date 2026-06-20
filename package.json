@@ -50,5 +50,6 @@
     "tsx": "catalog:dev",
     "typescript": "catalog:",
     "vitest": "catalog:testing"
-  }
+  },
+  "packageManager": "pnpm@11.8.0"
 }
