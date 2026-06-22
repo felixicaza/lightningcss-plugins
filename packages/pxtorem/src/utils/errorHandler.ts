@@ -4,6 +4,12 @@ export function validateIsArray(value: (string | RegExp)[], name: string) {
   }
 }
 
+export function validateIsBoolean(value: unknown, name: string): void {
+  if (typeof value !== 'boolean') {
+    throw new TypeError(`Invalid ${name}: must be a boolean.`)
+  }
+}
+
 export function validateIsNumber(value: number, name: string) {
   if (typeof value !== 'number' || isNaN(value)) {
     throw new Error(`Invalid ${name}: must be a valid number.`)

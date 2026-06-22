@@ -14,6 +14,35 @@ exports[`custom configs > should handle all props 1`] = `
 "
 `;
 
+exports[`custom configs > should handle convert media queries 1`] = `
+"@media (width >= 48rem) {
+  .foo {
+    margin: 16px;
+    font-size: 1rem;
+  }
+}
+
+@media (width >= 30rem) {
+  .bar {
+    margin: 12px;
+    font-size: .75rem;
+  }
+}
+
+#app {
+  margin: 14px;
+  font-size: .875rem;
+
+  @media (width >= 37.5rem) {
+    & .baz {
+      margin: 18px;
+      font-size: 1.125rem;
+    }
+  }
+}
+"
+`;
+
 exports[`custom configs > should handle custom configuration 1`] = `
 "div {
   margin: 16px;
@@ -197,6 +226,35 @@ exports[`custom configs > should handle pattern for props 1`] = `
   padding: .5rem .6875rem .5625rem .625rem;
   font-size: 24px;
   line-height: 30px;
+}
+"
+`;
+
+exports[`custom configs > should not convert media queries by default 1`] = `
+"@media (width >= 768px) {
+  .foo {
+    margin: 16px;
+    font-size: 1rem;
+  }
+}
+
+@media (width >= 480px) {
+  .bar {
+    margin: 12px;
+    font-size: .75rem;
+  }
+}
+
+#app {
+  margin: 14px;
+  font-size: .875rem;
+
+  @media (width >= 600px) {
+    & .baz {
+      margin: 18px;
+      font-size: 1.125rem;
+    }
+  }
 }
 "
 `;
