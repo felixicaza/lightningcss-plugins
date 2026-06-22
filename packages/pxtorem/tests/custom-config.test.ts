@@ -144,6 +144,20 @@ describe('custom configs', () => {
     expect(output).toMatchSnapshot()
   })
 
+  it('should handle custom ignoreSelectors', () => {
+    const css = 'div { margin: 16px; padding: 8px; font-size: 24px; line-height: 30px; letter-spacing: 5px; word-spacing: 10px; width: 100px; height: 50px; } .foo { margin: 15px; padding: 10px; font-size: 20px; line-height: 32px; letter-spacing: 6px; word-spacing: 8px; width: 100px; height: 50px; } #app { margin: 14px; padding: 9px; font-size: 22px; line-height: 28px; letter-spacing: 4px; word-spacing: 12px; width: 100px; height: 50px; } #bar { margin: 13px; padding: 7px; font-size: 26px; line-height: 26px; letter-spacing: 7px; word-spacing: 9px; width: 100px; height: 50px; } body { margin: 12px; padding: 6px; font-size: 28px; line-height: 24px; letter-spacing: 8px; word-spacing: 7px; width: 100px; height: 50px; } .body { margin: 11px; padding: 5px; font-size: 30px; line-height: 22px; letter-spacing: 9px; word-spacing: 6px; width: 100px; height: 50px; }'
+
+    const output = transform({
+      filename: 'input.css',
+      code: Buffer.from(css),
+      minify: false,
+      sourceMap: false,
+      visitor: composeVisitors([pxtorem({ ignoreSelectors: ['foo', 'bar', /^body/] })])
+    }).code.toString()
+
+    expect(output).toMatchSnapshot()
+  })
+
   it('should handle negation patterns', () => {
     const css = 'div { margin: 16px; padding: 8px; font-size: 24px; line-height: 30px; letter-spacing: 5px; word-spacing: 10px; width: 100px; height: 50px; background-position-y: 100px; }'
 

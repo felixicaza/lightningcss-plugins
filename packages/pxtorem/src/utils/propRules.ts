@@ -41,3 +41,27 @@ export function createPropertyMatcher(propList: (string | RegExp)[]): (property:
     return matched
   }
 }
+
+export function createSelectorMatcher(ignoreSelectors: (string | RegExp)[] = []): (selector: string) => boolean {
+  const matchers = ignoreSelectors
+    .map((item) => {
+      if (typeof item === 'string') {
+        const needle = item.trim()
+        if (!needle) return null
+        return (selector: string) => selector.includes(needle)
+      }
+
+      if (item instanceof RegExp) {
+        return (selector: string) => item.test(selector)
+      }
+
+      return null
+    })
+    .filter((fn): fn is (selector: string) => boolean => fn !== null)
+
+  if (matchers.length === 0) {
+    return () => false
+  }
+
+  return (selector: string): boolean => matchers.some((fn) => fn(selector))
+}

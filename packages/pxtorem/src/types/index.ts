@@ -1,5 +1,6 @@
-import type { CustomProperty, Declaration, UnparsedProperty, StyleSheet } from 'lightningcss'
+import type { CustomProperty, Declaration, UnparsedProperty, StyleSheet, Rule } from 'lightningcss'
 
+export type RuleLike = Rule
 export type StyleSheetLike = StyleSheet
 export type UnparsedLike = UnparsedProperty
 export type CustomPropertyLike = CustomProperty
@@ -41,4 +42,12 @@ export interface Config extends Options {
    * @default ['font', 'font-size', 'line-height', 'letter-spacing', 'word-spacing']
    */
   propList: (string | RegExp)[]
+  /**
+   * Selectors where px values should be ignored.
+   * Supports CSS Selectors and regular expressions.
+   * @example ['body'] => matches '.body' (you can use '.body' or '#app')
+   * @example [/^body$/] => matches 'body' but not '.body'
+   * @default []
+   */
+  ignoreSelectors: (string | RegExp)[]
 }
