@@ -1,15 +1,24 @@
-import type { Config, DeclarationLike, StyleSheetLike } from './types/index.ts'
+import type { Config, DeclarationLike, StyleSheetLike, RuleLike } from './types/index.ts'
 
 import { createPxToRemWalker } from './utils/conversion.ts'
-import { createPropertyMatcher } from './utils/propRules.ts'
-import { validateIsNumber, validatePositiveInteger } from './utils/errorHandler.ts'
-import { collectUsedCustomPropsInAst, isCustomDeclarationLike, isCustomPropertyLike, normalizeCustomName, getEffectiveProperty, getPropertyValueNode } from './utils/factory.ts'
+import { createPropertyMatcher, createSelectorMatcher } from './utils/propRules.ts'
+import { validateIsArray, validateIsNumber, validatePositiveInteger } from './utils/errorHandler.ts'
+import {
+  collectUsedCustomPropsInAst,
+  isCustomDeclarationLike,
+  isCustomPropertyLike,
+  normalizeCustomName,
+  getEffectiveProperty,
+  getPropertyValueNode,
+  hasIgnoredSelectorInRule
+} from './utils/factory.ts'
 
 const defaultConfig: Config = {
   rootValue: 16,
   unitPrecision: 4,
   propList: ['font', 'font-size', 'line-height', 'letter-spacing', 'word-spacing'],
-  minValue: 0
+  minValue: 0,
+  ignoreSelectors: []
 }
 
 export default function pxtorem(config: Partial<Config> = {}) {
@@ -20,8 +29,12 @@ export default function pxtorem(config: Partial<Config> = {}) {
   validateIsNumber(userConfig.rootValue, 'rootValue')
   validateIsNumber(userConfig.unitPrecision, 'unitPrecision')
   validateIsNumber(userConfig.minValue, 'minValue')
+  validateIsArray(userConfig.propList, 'propList')
+  validateIsArray(userConfig.ignoreSelectors, 'ignoreSelectors')
 
   const shouldConvertProperty = createPropertyMatcher(userConfig.propList)
+  const shouldIgnoreSelector = createSelectorMatcher(userConfig.ignoreSelectors)
+
   const walkAndConvert: (node: unknown) => boolean = createPxToRemWalker({
     rootValue: userConfig.rootValue,
     unitPrecision: userConfig.unitPrecision,
@@ -30,14 +43,29 @@ export default function pxtorem(config: Partial<Config> = {}) {
 
   const usedCustomProps = new Set<string>()
   const cache = new Map<string, DeclarationLike>()
+  const ignoreContextStack: boolean[] = []
 
   // Pre-scan once (before declaration visitors mutate anything)
   let scanned = false
   const StyleSheet = (sheet: StyleSheetLike) => {
     if (!scanned) {
-      collectUsedCustomPropsInAst(sheet, shouldConvertProperty, usedCustomProps)
+      collectUsedCustomPropsInAst(sheet, shouldConvertProperty, usedCustomProps, {
+        shouldIgnoreSelector
+      })
       scanned = true
     }
+    return undefined
+  }
+
+  const Rule = (rule: RuleLike) => {
+    const parentIgnored = ignoreContextStack[ignoreContextStack.length - 1] === true
+    const currentIgnored = parentIgnored || hasIgnoredSelectorInRule(rule, shouldIgnoreSelector)
+    ignoreContextStack.push(currentIgnored)
+    return undefined
+  }
+
+  const RuleExit = () => {
+    ignoreContextStack.pop()
     return undefined
   }
 
@@ -48,6 +76,9 @@ export default function pxtorem(config: Partial<Config> = {}) {
       let handler = cache.get(prop)
       if (!handler) {
         const created: DeclarationLike = (value) => {
+          const ignoreCurrentDeclaration = ignoreContextStack[ignoreContextStack.length - 1] === true
+          if (ignoreCurrentDeclaration) return undefined
+
           if (prop === 'custom') {
             let custom = null
 
@@ -94,5 +125,5 @@ export default function pxtorem(config: Partial<Config> = {}) {
     }
   })
 
-  return { StyleSheet, Declaration }
+  return { StyleSheet, Rule, RuleExit, Declaration }
 }

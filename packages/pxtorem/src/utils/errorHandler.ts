@@ -1,3 +1,9 @@
+export function validateIsArray(value: (string | RegExp)[], name: string) {
+  if (!Array.isArray(value)) {
+    throw new Error(`Invalid ${name}: must be an array of strings or RegExp.`)
+  }
+}
+
 export function validateIsNumber(value: number, name: string) {
   if (typeof value !== 'number' || isNaN(value)) {
     throw new Error(`Invalid ${name}: must be a valid number.`)
