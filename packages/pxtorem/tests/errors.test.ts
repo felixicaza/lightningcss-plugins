@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { validateIsArray, validatePositiveInteger, validateIsNumber } from '../src/utils/errorHandler'
+import { validateIsArray, validateIsBoolean, validatePositiveInteger, validateIsNumber } from '../src/utils/errorHandler'
 
 describe('validate errors', () => {
   it('`propList` should throw error for non-array value', () => {
@@ -19,6 +19,10 @@ describe('validate errors', () => {
 
   it('`ignoreSelectors` should pass for valid array value', () => {
     expect(() => validateIsArray(['.no-convert', /ignore-this/], 'ignoreSelectors')).not.toThrow()
+  })
+
+  it('`mediaQuery` should throw error for non-boolean value', () => {
+    expect(() => validateIsBoolean('not a boolean', 'mediaQuery')).toThrow('Invalid mediaQuery: must be a boolean.')
   })
 
   it('`rootValue` should throw error for negative value', () => {

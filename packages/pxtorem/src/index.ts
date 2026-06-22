@@ -1,8 +1,8 @@
-import type { Config, DeclarationLike, StyleSheetLike, RuleLike } from './types/index.ts'
+import type { Config, DeclarationLike, StyleSheetLike, RuleLike, MediaQueryLike } from './types/index.ts'
 
 import { createPxToRemWalker } from './utils/conversion.ts'
 import { createPropertyMatcher, createSelectorMatcher } from './utils/propRules.ts'
-import { validateIsArray, validateIsNumber, validatePositiveInteger } from './utils/errorHandler.ts'
+import { validateIsArray, validateIsBoolean, validateIsNumber, validatePositiveInteger } from './utils/errorHandler.ts'
 import {
   collectUsedCustomPropsInAst,
   isCustomDeclarationLike,
@@ -18,7 +18,8 @@ const defaultConfig: Config = {
   unitPrecision: 4,
   propList: ['font', 'font-size', 'line-height', 'letter-spacing', 'word-spacing'],
   minValue: 0,
-  ignoreSelectors: []
+  ignoreSelectors: [],
+  mediaQuery: false
 }
 
 export default function pxtorem(config: Partial<Config> = {}) {
@@ -31,6 +32,7 @@ export default function pxtorem(config: Partial<Config> = {}) {
   validateIsNumber(userConfig.minValue, 'minValue')
   validateIsArray(userConfig.propList, 'propList')
   validateIsArray(userConfig.ignoreSelectors, 'ignoreSelectors')
+  validateIsBoolean(userConfig.mediaQuery, 'mediaQuery')
 
   const shouldConvertProperty = createPropertyMatcher(userConfig.propList)
   const shouldIgnoreSelector = createSelectorMatcher(userConfig.ignoreSelectors)
@@ -44,6 +46,15 @@ export default function pxtorem(config: Partial<Config> = {}) {
   const usedCustomProps = new Set<string>()
   const cache = new Map<string, DeclarationLike>()
   const ignoreContextStack: boolean[] = []
+
+  const MediaQuery = (query: MediaQueryLike) => {
+    if (!userConfig.mediaQuery) return undefined
+
+    const changed = walkAndConvert(query.condition)
+    if (!changed) return
+
+    return query
+  }
 
   // Pre-scan once (before declaration visitors mutate anything)
   let scanned = false
@@ -125,5 +136,5 @@ export default function pxtorem(config: Partial<Config> = {}) {
     }
   })
 
-  return { StyleSheet, Rule, RuleExit, Declaration }
+  return { MediaQuery, StyleSheet, Rule, RuleExit, Declaration }
 }

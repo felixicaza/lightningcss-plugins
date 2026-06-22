@@ -172,6 +172,34 @@ describe('custom configs', () => {
     expect(output).toMatchSnapshot()
   })
 
+  it('should not convert media queries by default', () => {
+    const css = '@media (min-width: 768px) { .foo { font-size: 16px; margin: 16px; } } @media (width >= 480px) { .bar { font-size: 12px; margin: 12px; } } #app { font-size: 14px; margin: 14px; @media (min-width: 600px) { .baz { font-size: 18px; margin: 18px; } }'
+
+    const output = transform({
+      filename: 'input.css',
+      code: Buffer.from(css),
+      minify: false,
+      sourceMap: false,
+      visitor: composeVisitors([pxtorem()])
+    }).code.toString()
+
+    expect(output).toMatchSnapshot()
+  })
+
+  it('should handle convert media queries', () => {
+    const css = '@media (min-width: 768px) { .foo { font-size: 16px; margin: 16px; } } @media (width >= 480px) { .bar { font-size: 12px; margin: 12px; } } #app { font-size: 14px; margin: 14px; @media (min-width: 600px) { .baz { font-size: 18px; margin: 18px; } } }'
+
+    const output = transform({
+      filename: 'input.css',
+      code: Buffer.from(css),
+      minify: false,
+      sourceMap: false,
+      visitor: composeVisitors([pxtorem({ mediaQuery: true })])
+    }).code.toString()
+
+    expect(output).toMatchSnapshot()
+  })
+
   it('should throw error for negative rootValue', () => {
     expect(() => pxtorem({ rootValue: -1 })).toThrow('Invalid rootValue: must not be negative.')
   })

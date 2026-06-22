@@ -1,6 +1,7 @@
-import type { CustomProperty, Declaration, UnparsedProperty, StyleSheet, Rule } from 'lightningcss'
+import type { Rule, MediaQuery, StyleSheet, UnparsedProperty, CustomProperty, Declaration } from 'lightningcss'
 
 export type RuleLike = Rule
+export type MediaQueryLike = MediaQuery
 export type StyleSheetLike = StyleSheet
 export type UnparsedLike = UnparsedProperty
 export type CustomPropertyLike = CustomProperty
@@ -50,4 +51,9 @@ export interface Config extends Options {
    * @default []
    */
   ignoreSelectors: (string | RegExp)[]
+  /**
+   * Allow px values to be converted inside media queries.
+   * @default false
+   */
+  mediaQuery: boolean
 }
