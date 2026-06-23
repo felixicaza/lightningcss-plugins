@@ -17,7 +17,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/felixicaza/lightningcss-plugins.git"
+    "url": "git+https://github.com/felixicaza/lightningcss-plugins.git",
+    "directory": "packages/pxtorem"
   },
   "license": "MIT",
   "author": "Felix Icaza <fx.joliett17@gmail.com>",

@@ -59,9 +59,7 @@ const result = transform({
       padding: 20px 12px;
     }
   `),
-  visitor: composeVisitors([
-    pxtorem(),
-  ]),
+  visitor: composeVisitors([pxtorem()]),
 });
 
 console.log(result.code.toString()); // .foo { padding: 1.25rem 0.75rem; }
@@ -104,6 +102,26 @@ The number of decimal places to use for the converted values.
 
 The minimum value to convert. Also supports `negative` and `float` values.
 
+#### `propList` (string | RegExp)[] — optional (default: ['font', 'font-size', 'line-height', 'letter-spacing', 'word-spacing'])
+
+A list of properties to convert. You can use a string or an array of strings and/or regex patterns.
+
+- Use `*` as a wildcard to match every property. Example: `['*']`
+- Place `*` before or after a term to match partial property names. Example: `['*position*']` matches `background-position-y`
+- Prefix a property with `!` to exclude it from matching. Example: `['*', '!letter-spacing']`
+- The exclusion prefix can be combined with wildcard patterns. Example: `['*', '!font*']`
+
+#### `ignoreSelectors` (string | RegExp)[] — optional (default: [])
+
+A list of selectors to ignore conversion. You can use a string or an array of strings and/or regex patterns.
+
+- When the value is a string, the selector is considered a match if it includes that string. Example: `['body']` matches `.body-class`.
+- When the value is a regular expression, the selector is tested against that pattern. Example: `[/^body$/]` matches `body`, but does not match `.body`.
+
+#### `mediaQuery` (boolean) — optional (default: false)
+
+Whether to convert pixel units in media queries.
+
 <details>
   <summary>Example</summary>
   <br/>
@@ -123,6 +141,9 @@ The minimum value to convert. Also supports `negative` and `float` values.
             rootValue: 18,
             unitPrecision: 2,
             minValue: 10,
+            propList: ['*', '!letter-spacing'],
+            ignoreSelectors: ['body', /^\.no-convert$/],
+            mediaQuery: true,
           }),
         ]),
       },
@@ -135,7 +156,7 @@ See more examples in [tests folder](https://github.com/felixicaza/lightningcss-p
 
 ## 🏆 Credits
 
-This plugin was highly inspired by [@cuth/postcss-pxtorem](https://github.com/cuth/postcss-pxtorem).
+This plugin is the LightningCSS version of [@cuth/postcss-pxtorem](https://github.com/cuth/postcss-pxtorem).
 
 ## 🤝 Contributing
 
