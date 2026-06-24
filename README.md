@@ -6,7 +6,7 @@ A collection of plugins for [LightningCSS](https://lightningcss.dev).
 
 ## 📦 Packages
 
-- [`lightningcss-plugin-pxtorem`](./packages/dts-minify-lite): A plugin to convert pixel units to rem units in your CSS.
+- [`lightningcss-plugin-pxtorem`](./packages/pxtorem): A plugin to convert pixel units to rem units in your CSS.
 
 ## 🤝 Contributing
 
