@@ -24,7 +24,6 @@ catalogs:
    peer:
       lightningcss: 1.32.0
    testing:
-      "@vitest/coverage-v8": 4.1.9
       vitest: 4.1.9
    releasing:
       bumpp: 11.1.0
