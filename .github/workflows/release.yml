@@ -24,22 +24,23 @@ jobs:
            run: |
               TAG="${GITHUB_REF_NAME}"
 
-              # Format: @scope/name@x.y.z or name@x.y.z
-              if [[ ! "$TAG" =~ ^(@[a-zA-Z0-9-]+/)?[a-zA-Z0-9-]+@[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                echo "Invalid tag format. Expected '@scope/name@x.y.z' or 'name@x.y.z'. Got: $TAG"
+              # Format: @scope/lightningcss-plugin-name@x.y.z or lightningcss-plugin-name@x.y.z
+              if [[ ! "$TAG" =~ ^(@[a-zA-Z0-9-]+/)?lightningcss-plugin-[a-zA-Z0-9-]+@[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                echo "Invalid tag format. Expected '@scope/lightningcss-plugin-name@x.y.z' or 'lightningcss-plugin-name@x.y.z'. Got: $TAG"
                 exit 1
               fi
 
               TAG_NAME="${TAG%@*}"
               TAG_VERSION="${TAG##*@}"
 
-              # folder = unscoped package name part
+              # folder = minimal package name part
               if [[ "$TAG_NAME" =~ ^@[a-zA-Z0-9-]+/(.+)$ ]]; then
-                PKG_FOLDER="${BASH_REMATCH[1]}"
+                PKG_BASE="${BASH_REMATCH[1]}"
               else
-                PKG_FOLDER="$TAG_NAME"
+                PKG_BASE="$TAG_NAME"
               fi
 
+              PKG_FOLDER="${PKG_BASE#lightningcss-plugin-}"
               PKG_DIR="packages/${PKG_FOLDER}"
 
               if [[ ! -f "${PKG_DIR}/package.json" ]]; then
