@@ -31,7 +31,10 @@
     "pre-commit": "pnpm nano-staged"
   },
   "nano-staged": {
-    "*": ["pnpm lint:fix", "pnpm typecheck"]
+    "*": [
+      "pnpm lint:fix",
+      "pnpm typecheck"
+    ]
   },
   "devDependencies": {
     "@felixicaza/eslint-config": "catalog:lint",
@@ -45,6 +48,7 @@
     "lightningcss": "catalog:peer",
     "nano-staged": "catalog:lint",
     "oxlint": "catalog:lint",
+    "oxlint-tsgolint": "catalog:lint",
     "simple-git-hooks": "catalog:lint",
     "tsdown": "catalog:build",
     "tsx": "catalog:dev",
