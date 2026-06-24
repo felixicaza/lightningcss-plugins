@@ -41,7 +41,6 @@
     "@felixicaza/oxlint-config": "catalog:lint",
     "@felixicaza/tsdown-config": "catalog:build",
     "@types/node": "catalog:",
-    "@vitest/coverage-v8": "catalog:testing",
     "bumpp": "catalog:releasing",
     "eslint": "catalog:lint",
     "jiti": "catalog:lint",
